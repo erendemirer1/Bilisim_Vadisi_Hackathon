@@ -34,11 +34,21 @@ jobs:
           push: true
           tags: erendemirer1/frontend:latest
 
-      - name: Set up Kubernetes context
-        uses: azure/k8s-set-context@v3
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
         with:
-          method: kubeconfig
-          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          install_components: 'gke-gcloud-auth-plugin'
+
+      - name: Configure kubectl
+        run: |
+          gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} \
+            --zone=${{ secrets.GKE_ZONE }} \
+            --project=${{ secrets.GCP_PROJECT_ID }}
 
       - name: Deploy to Kubernetes
         uses: azure/k8s-deploy@v4
