@@ -1,0 +1,57 @@
+name: CI
+
+# 1) Bu pipeline ne zaman çalışacak?
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+  backend-ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 2) Repo kodunu runner makineye çek
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 3) Node 20 ortamı kur (backend Node.js olduğu için)
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # 4) Backend için test/lint yerine şimdilik placeholder komut
+      - name: Backend placeholder checks
+        run: |
+          echo "Backend CI step is running..."
+          ls -la backend
+          # İleride:
+          # cd backend
+          # npm install
+          # npm test
+          # npm run lint
+
+  frontend-ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Frontend de Node tabanlı olacak diye Node ortamını hazırlıyoruz
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Frontend placeholder checks
+        run: |
+          echo "Frontend CI step is running..."
+          ls -la frontend
+          # İleride:
+          # cd frontend
+          # npm install
+          # npm run build
+          # npm test
