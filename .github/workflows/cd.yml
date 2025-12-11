@@ -34,6 +34,12 @@ jobs:
           push: true
           tags: erendemirer1/frontend:latest
 
+      - name: Set up Kubernetes context
+        uses: azure/k8s-set-context@v3
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+
       - name: Deploy to Kubernetes
         uses: azure/k8s-deploy@v4
         with:
@@ -46,4 +52,3 @@ jobs:
             erendemirer1/backend:latest
             erendemirer1/frontend:latest
           namespace: default
-          kubeconfig: ${{ secrets.KUBE_CONFIG }}
