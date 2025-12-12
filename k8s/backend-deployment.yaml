@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: erendemirer1/hack-backend:latest
+          image: erendemirer1/backend:latest
           ports:
             - containerPort: 3000
           env:

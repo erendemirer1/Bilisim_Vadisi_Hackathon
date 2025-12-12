@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: erendemirer1/hack-frontend:latest
+          image: erendemirer1/frontend:latest
           ports:
             - containerPort: 80
