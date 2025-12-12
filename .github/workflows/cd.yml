@@ -51,14 +51,15 @@ jobs:
             --project=${{ secrets.GCP_PROJECT_ID }}
 
       - name: Deploy to Kubernetes
-        uses: azure/k8s-deploy@v4
-        with:
-          manifests: |
-            ./k8s/backend-deployment.yaml
-            ./k8s/backend-service.yaml
-            ./k8s/frontend-deployment.yaml
-            ./k8s/frontend-service.yaml
-          images: |
-            erendemirer1/backend:latest
-            erendemirer1/frontend:latest
-          namespace: default
+        run: |
+          kubectl apply -f ./k8s/backend-deployment.yaml
+          kubectl apply -f ./k8s/backend-service.yaml
+          kubectl apply -f ./k8s/frontend-deployment.yaml
+          kubectl apply -f ./k8s/frontend-service.yaml
+          
+          echo "Waiting for deployments to be ready..."
+          kubectl rollout status deployment/backend --namespace=default --timeout=5m
+          kubectl rollout status deployment/frontend --namespace=default --timeout=5m
+          
+          echo "Deployment successful!"
+          kubectl get pods -n default
